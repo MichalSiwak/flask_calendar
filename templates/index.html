@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <title>Calendar</title>
+</head>
+<body>
+
+<nav class="navbar navbar-dark bg-dark">
+    <form method="post">
+        <button class="btn btn-outline-dark" name="button" value="index"
+        >
+            <div><h1 class="navbar-brand">Twój kalendarz</h1></div>
+        </button>
+    </form>
+
+    <form class="form-inline my-2 my-lg-0" method="POST">
+        {% if current_user is true %}
+       <button class="btn btn-outline-success my-2 my-sm-0" role="button" name="button" value="logout" >Wyloguj</button>
+        {% else %}
+        <button class="btn btn-outline-success my-2 my-sm-0" role="button" name="button" value="login" >Logowanie</button>
+        {% endif %}
+    </form>
+</nav>
+
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                </div>
+                <div class="col-6">
+                    <h1 class="display-4 text-xl-center">{{ day_name }}</h1>
+                    <h1 class="display-6 text-xl-center">{{ today_date }}</h1>
+                </div>
+                <div class="col">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <nav class="navbar navbar-dark bg-dark"></nav>
+</div>
+
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <form method="POST">
+                        <div class="row justify-content-md-center">
+                            <div class="card text-white bg-dark mb-3" style="min-height: 23rem; max-height: 30rem; max-width: 18rem; min-width: 18rem;">
+                                <button class="btn btn-dark" name="button" value="day">
+                                    <div class="card-header" style="min-height: 5rem;"><h1 class="text-xl-center"1 >{{ day_name }}</h1></div>
+                                    <div class="row justify-content-md-center"></div>
+                                    <h1 class="display-1 text-xl-center">{{ today_date.day }}</h1>
+                                    <h1 class="text-xl-center">{{ month_name }}</h1>
+                                    <span class="text-sm-center"><script type="text/javascript" src="https://imienniczek.pl/widget/js" ></script></span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    </div>
+                <div class="col">
+                      <form method="POST">
+                          <div class="row justify-content-md-center">
+                              <div class="card text-white bg-dark mb-3" style="min-height: 23rem; max-height: 30rem; max-width: 18rem; min-width: 18rem;">
+                                <button class="btn btn-dark" name="button" value="month">
+                                    <div class="card-header" style="min-height: 5rem;"><h1 class="text-xl-center">{{ month_name }}</h1></div>
+                                    <h1 class="display-5 text-xl-center">{{ year }}</h1>
+                                    <div class="row justify-content-md-center">
+                                        <table class="text-xl-center">
+                                        <tr>
+                                            {% for day_name in short_day_names %}
+                                            <td>{{ day_name }}</td>
+                                            {% endfor %}
+                                        </tr>
+
+                                          {% for week in months %}
+                                        <tr>
+                                            {% for day in week %}
+                                            {% if day ==0 %}
+                                            <td>&nbsp</td>
+                                            {% else %}
+                                            <td>{{ day }}</td>
+                                            {% endif %}
+                                            {% endfor %}
+                                        </tr>
+                                        {% endfor %}
+                                    </table>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                      </form>
+                    </div>
+                <div class="col">
+                    <form method="POST">
+                        <div class="row justify-content-md-center">
+                            <div class="card text-white bg-dark mb-3"  style="min-height: 23rem; max-height: 30rem; max-width: 18rem; min-width: 18rem;">
+                                <div class="card-header" style="min-height: 5rem;"><h2>Plan na dzisiaj:</h2></div>
+                                <div class="row justify-content-md-center"></div>
+                                <table class="text-xl-center">
+                                    <tr>
+                                        <th>Start</th>
+                                        <th>Stop</th>
+                                        <th>Do zrobienia</th>
+                                    </tr>
+                                    {% if current_user %}
+                                    {% for task in tasks %}
+                                    <tr>
+                                        <td>{{ task.start_time_format() }}</td>
+                                        <td>{{ task.stop_time_format() }}</td>
+                                        <td>
+                                            <button class="btn btn-dark" name="to_details" value="{{ task.task_number }}">
+                                                {{ task.title }}
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                    {% endif %}
+                                </table>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
